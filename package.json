@@ -1,0 +1,54 @@
+{
+  "name": "vuetify-message-box",
+  "version": "1.0.0",
+  "description": "基于 vue2 + vuetify 的消息弹框组件",
+  "main": "lib/vuetify-message-box.umd.min.js",
+  "author": "luren",
+  "homepage": "https://github.com/kscript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kscript/vuetify-message-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kscript/vuetify-message-box/issues"
+  },
+  "keywords": [
+    "vue",
+    "vuetify",
+    "component",
+    "message-box"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:umd": "vue-cli-service build --target lib --name vuetify-message-box --dest lib src/components/message-box/index.js",
+    "prepublishOnly": "npm run build:umd",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@mdi/font": "^6.9.96",
+    "core-js": "^3.8.3",
+    "vue": "^2.6.14",
+    "vuetify": "^2.6.7"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-standard": "^6.1.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "@vue/test-utils": "^1.1.3",
+    "@vue/vue2-jest": "^27.0.0-alpha.2",
+    "babel-jest": "^27.0.6",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.0.5",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "license": "MIT"
+}
