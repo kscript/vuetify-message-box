@@ -55,7 +55,10 @@ export default {
         '按类型',
         '使用VNode',
         '关闭最后一个',
-        '关闭指定name'
+        '关闭指定name',
+        '按钮样式',
+        '按钮节点',
+        '按钮前置后置内容'
       ]
     }
   },
@@ -112,6 +115,47 @@ export default {
         setTimeout(() => {
           this.$msgbox.close('msg1')
         }, 2e3)
+      } else if (mode === '按钮样式') {
+        this.$msgbox('按钮样式', {
+          cancelButtonClass: 'default',
+          confirmButtonClass: 'error'
+        })
+      } else if (mode === '按钮节点') {
+        const cancelButton = this.$createElement('v-btn', {
+          on: {
+            click: () => {
+              console.log(this, confirmButton)
+            }
+          }
+        }, '取消')
+        const confirmButton = this.$createElement('v-btn', {
+          on: {
+            click: () => {
+              console.log(this, confirmButton)
+            }
+          }
+        }, '确定')
+        this.$msgbox('按钮节点', {
+          confirmButton,
+          cancelButton
+        })
+      } else if (mode === '按钮前置后置内容') {
+        this.$msgbox('按钮前置后置内容', {
+          prepend: this.$createElement('v-btn', {
+            on: {
+              click: () => {
+                this.$msgbox('点击了前置按钮')
+              }
+            }
+          }, '前置'),
+          append: this.$createElement('v-btn', {
+            on: {
+              click: () => {
+                this.$msgbox('点击了后置按钮')
+              }
+            }
+          }, '后置')
+        })
       }
     }
   },

@@ -31,24 +31,32 @@
           <component v-else-if="contentVM" :is="contentVM" />
         </v-card-text>
         <v-card-actions :class="opts.center ? 'justify-center' : 'justify-end'">
-          <v-btn
-            v-if="opts.showCancelButton"
-            :class="opts.cancelButtonClass"
-            :dark="opts.dark"
-            @click="onCancel"
-          >
-            {{ opts.cancelButtonText }}
-          </v-btn>
-          <v-btn
-            color="primary"
-            v-if="opts.showConfirmButton"
-            :class="opts.confirmButtonClass"
-            :dark="opts.dark"
-            @click="onConfirm"
-            tabindex="1"
-          >
-            {{ opts.confirmButtonText }}
-          </v-btn>
+          <component v-if="prependVM" :is="prependVM" />
+          <template v-if="opts.showCancelButton">
+            <component v-if="cancelButtonVM" :is="cancelButtonVM" @click="onCancel"/>
+            <v-btn
+              v-else
+              :class="opts.cancelButtonClass"
+              :dark="opts.dark"
+              @click="onCancel"
+            >
+              {{ opts.cancelButtonText }}
+            </v-btn>
+          </template>
+          <template v-if="opts.showConfirmButton">
+            <component v-if="confirmButtonVM" :is="confirmButtonVM" @click="onConfirm"/>
+            <v-btn
+              v-else
+              color="primary"
+              :class="opts.confirmButtonClass"
+              :dark="opts.dark"
+              @click="onConfirm"
+              tabindex="1"
+            >
+              {{ opts.confirmButtonText }}
+            </v-btn>
+          </template>
+          <component v-if="appendVM" :is="appendVM" />
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -117,15 +125,19 @@ export default {
       return ''
     },
     contentVM () {
-      const { content } = this.opts
-      if (content instanceof Object && content.tag) {
-        return {
-          render () {
-            return content
-          }
-        }
-      }
-      return null
+      return this.getVNode('content')
+    },
+    prependVM () {
+      return this.getVNode('prepend')
+    },
+    appendVM () {
+      return this.getVNode('append')
+    },
+    confirmButtonVM () {
+      return this.getVNode('confirmButton')
+    },
+    cancelButtonVM () {
+      return this.getVNode('cancelButton')
     },
     titleClass () {
       return !['success', 'error', 'wraning', 'info'].includes(this.opts.type) && this.opts.center ? 'pl-9' : ''
@@ -155,6 +167,17 @@ export default {
     }
   },
   methods: {
+    getVNode (key) {
+      const node = this.opts[key]
+      if (node instanceof Object && node.tag) {
+        return {
+          render () {
+            return node
+          }
+        }
+      }
+      return null
+    },
     onCancel () {
       this.isClose = false
       this.visible = false

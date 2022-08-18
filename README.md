@@ -81,11 +81,17 @@ export default {
 | type | string | '' | 消息类型 'success', 'error', 'warning', 'info' |
 | icon | boolean, string | - | 消息图标, 默认根据type显示, false则不显示 |
 | closeIcon | string | '' | 关闭按钮图标 |
-| contentClass | string | '' | 消息内容class |
+| contentClass | string | '' | 消息内容类名 |
+| message | string | '' | 消息文本, 与content属性互斥, 优先级高 |
+| content | vnode | null | 消息内容节点 |
+| prepend | vnode | null | 按钮前置内容 |
+| append | vnode | null | 按钮后置内容 |
 | showConfirmButton | boolean | true | 是否显示确认按钮 |
 | confirmButtonText | string | '确定' | 确认按钮文本 |
+| confirmButtonClass | string | '' | 确认按钮类名 |
 | showCancelButton | boolean | true | 是否显示取消按钮 |
 | cancelButtonText | string | '取消' | 取消按钮文本 |
+| cancelButtonClass | string | '' | 确认按钮类名 |
 | closeOnClickModal | boolean | true | 点击遮罩是否关闭 |
 | silence | boolean | false | 是否关闭reject提示, 为true时, 最好在同一eventLoop周期内调用then/catch, 不然原有回调的参数会被丢弃 |
 
