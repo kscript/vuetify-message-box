@@ -22,7 +22,9 @@
           :dismissible="dismissible"
           text
         >
-          <div :class="titleClass">{{ opts.title }}</div>
+          <slot name="title">
+            <div :class="titleClass">{{ opts.title }}</div>
+          </slot>
         </v-alert>
         <v-card-text :class="opts.title ? '' : 'pt-5'">
           <slot>
@@ -109,7 +111,7 @@ export default {
     },
     visible: {
       get () {
-        return this.propVisible || this.opts.visible
+        return !!(this.propVisible || this.opts.visible)
       },
       set (visible) {
         if (visible) {
@@ -220,9 +222,6 @@ export default {
         }
       }, this.closeDelay)
     }
-  },
-  created () {
-    console.log(this)
   }
 }
 </script>
