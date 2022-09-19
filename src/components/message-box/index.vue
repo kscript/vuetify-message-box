@@ -25,37 +25,41 @@
           <div :class="titleClass">{{ opts.title }}</div>
         </v-alert>
         <v-card-text :class="opts.title ? '' : 'pt-5'">
-          <template v-if="message">
-            {{ message }}
-          </template>
-          <component v-else-if="contentVM" :is="contentVM" />
+          <slot>
+            <template v-if="message">
+              {{ message }}
+            </template>
+            <component v-else-if="contentVM" :is="contentVM" />
+          </slot>
         </v-card-text>
         <v-card-actions :class="opts.center ? 'justify-center' : 'justify-end'">
           <component v-if="prependVM" :is="prependVM" />
-          <template v-if="opts.showCancelButton">
-            <component v-if="cancelButtonVM" :is="cancelButtonVM" @click="onCancel"/>
-            <v-btn
-              v-else
-              :class="opts.cancelButtonClass"
-              :dark="opts.dark"
-              @click="onCancel"
-            >
-              {{ opts.cancelButtonText }}
-            </v-btn>
-          </template>
-          <template v-if="opts.showConfirmButton">
-            <component v-if="confirmButtonVM" :is="confirmButtonVM" @click="onConfirm"/>
-            <v-btn
-              v-else
-              color="primary"
-              :class="opts.confirmButtonClass"
-              :dark="opts.dark"
-              @click="onConfirm"
-              tabindex="1"
-            >
-              {{ opts.confirmButtonText }}
-            </v-btn>
-          </template>
+          <slot name="foot">
+            <template v-if="opts.showCancelButton">
+              <component v-if="cancelButtonVM" :is="cancelButtonVM" @click="onCancel"/>
+              <v-btn
+                v-else
+                :class="opts.cancelButtonClass"
+                :dark="opts.dark"
+                @click="onCancel"
+              >
+                {{ opts.cancelButtonText }}
+              </v-btn>
+            </template>
+            <template v-if="opts.showConfirmButton">
+              <component v-if="confirmButtonVM" :is="confirmButtonVM" @click="onConfirm"/>
+              <v-btn
+                v-else
+                color="primary"
+                :class="opts.confirmButtonClass"
+                :dark="opts.dark"
+                @click="onConfirm"
+                tabindex="1"
+              >
+                {{ opts.confirmButtonText }}
+              </v-btn>
+            </template>
+          </slot>
           <component v-if="appendVM" :is="appendVM" />
         </v-card-actions>
       </v-card>
@@ -71,6 +75,10 @@ export default {
     options: {
       type: Object,
       default: () => ({})
+    },
+    value: {
+      type: Boolean,
+      default: false
     },
     done: {
       type: Function,
@@ -101,10 +109,10 @@ export default {
     },
     visible: {
       get () {
-        return this.opts.visible
+        return this.propVisible || this.opts.visible
       },
-      set (val) {
-        if (val) {
+      set (visible) {
+        if (visible) {
           this.isClose = true
         } else {
           this.afterLeave()
@@ -112,7 +120,8 @@ export default {
             this.done('close')
           }
         }
-        this.opts.visible = val
+        this.propVisible = this.opts.visible = visible
+        this.$emit('input', visible)
       }
     },
     message () {
@@ -161,9 +170,18 @@ export default {
       return closeDelay >= 0 ? closeDelay : 5e3
     }
   },
+  watch: {
+    value: {
+      handler (newValue) {
+        this.propVisible = newValue
+      },
+      immediate: true
+    }
+  },
   data () {
     return {
-      isClose: true
+      isClose: true,
+      propVisible: false
     }
   },
   methods: {
@@ -194,13 +212,17 @@ export default {
       this.done('close')
     },
     afterLeave () {
+      if (this.$parent) return
       setTimeout(() => {
         if (!this.visible) {
-          this.$destroy(true)
           this.$el.parentNode.removeChild(this.$el)
+          this.$destroy(true)
         }
       }, this.closeDelay)
     }
+  },
+  created () {
+    console.log(this)
   }
 }
 </script>

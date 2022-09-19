@@ -40,14 +40,22 @@
         </v-card-actions>
       </v-card>
     </v-main>
+    <messageBox v-model="visible">
+      111223
+    </messageBox>
   </v-app>
 </template>
 
 <script>
+import { messageBox } from '@/components/message-box'
 export default {
   name: 'App',
+  components: {
+    messageBox
+  },
   data () {
     return {
+      visible: false,
       examples: [
         '默认',
         '带选项1',
@@ -58,7 +66,8 @@ export default {
         '关闭指定name',
         '按钮样式',
         '按钮节点',
-        '按钮前置后置内容'
+        '按钮前置后置内容',
+        '引入组件'
       ]
     }
   },
@@ -156,6 +165,8 @@ export default {
             }
           }, '后置')
         })
+      } else if (mode === '引入组件') {
+        this.visible = true
       }
     }
   },

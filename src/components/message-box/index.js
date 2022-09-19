@@ -1,5 +1,7 @@
 import Vue from 'vue'
-import messageBox from './index.vue'
+import component from './index.vue'
+
+export const messageBox = component
 
 const formatOptions = (message, options = {}, baseOptions = {}) => {
   const data = message instanceof Object ? message : { message }
@@ -14,7 +16,6 @@ const getName = (name) => {
 const msgbox = ({ vuetify, zIndex = 1 }) => {
   zIndex = isNaN(zIndex) || zIndex < 1 ? 1 : zIndex
   const instances = []
-  console.log(instances)
   const Ctor = Vue.extend(Object.assign({ vuetify }, messageBox))
   const open = (message, options) => {
     options = formatOptions(message, options, msgbox.configs)
@@ -28,9 +29,8 @@ const msgbox = ({ vuetify, zIndex = 1 }) => {
     })
     const currentInstance = new Ctor({
       propsData: {
-        options: Object.assign(options, {
-          visible: true
-        }),
+        value: true,
+        options: Object.assign(options),
         done (type) {
           hooks[type === 'confirm' ? 'resolve' : 'reject'](type)
           if (options.silence) {
@@ -118,6 +118,7 @@ export const MessageBox = {
 
 if (typeof window !== 'undefined' && window instanceof Object) {
   window.VuetifyMessageBox = MessageBox
+  window.VuetifyMessageBoxComponent = messageBox
 }
 
 export default MessageBox
