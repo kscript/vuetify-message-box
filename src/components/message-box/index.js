@@ -13,7 +13,7 @@ const getName = (name) => {
   return name && typeof name === 'string' ? 'name:' + name : ''
 }
 
-const msgbox = ({ vuetify, zIndex = 1 }) => {
+export const msgbox = ({ vuetify, zIndex = 1 }) => {
   zIndex = isNaN(zIndex) || zIndex < 1 ? 1 : zIndex
   const instances = []
   const Ctor = Vue.extend(Object.assign({ vuetify }, messageBox))
@@ -117,6 +117,7 @@ export const MessageBox = {
 }
 
 if (typeof window !== 'undefined' && window instanceof Object) {
+  window.VuetifyMsgbox = msgbox
   window.VuetifyMessageBox = MessageBox
   window.VuetifyMessageBoxComponent = messageBox
 }
