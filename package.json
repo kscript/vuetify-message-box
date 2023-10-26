@@ -1,6 +1,6 @@
 {
   "name": "vuetify-message-box",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "基于 vue2 + vuetify 的消息弹框组件",
   "main": "lib/vuetify-message-box.umd.min.js",
   "author": "luren",

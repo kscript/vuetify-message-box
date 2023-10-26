@@ -151,12 +151,13 @@ export default {
       return this.getVNode('cancelButton')
     },
     titleClass () {
-      return !['success', 'error', 'wraning', 'info'].includes(this.opts.type) && this.opts.center ? 'pl-9' : ''
+      const { titleClass, center, type } = this.opts
+      return (typeof titleClass === 'string' ? titleClass : '') + (!['success', 'error', 'warning', 'info'].includes(type) && center ? ' pl-9' : '')
     },
     contentClass () {
       const { contentClass, center } = this.opts
       const centerClass = center ? ' text-center' : ''
-      if (typeof contentClass === 'string' && contentClass) {
+      if (typeof contentClass === 'string') {
         return contentClass + centerClass
       }
       return centerClass
